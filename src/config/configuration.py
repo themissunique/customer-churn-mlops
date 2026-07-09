@@ -3,7 +3,7 @@ from pathlib import Path
 import yaml
 
 from src.entity.config_entity import (DataIngestionConfig, DataTransformationConfig,
-                                      DataValidationConfig)
+                                      DataValidationConfig, ModelTrainerConfig)
 
 
 class ConfigurationManager:
@@ -63,6 +63,26 @@ class ConfigurationManager:
 
             preprocessor_path=Path(
                 config["preprocessor_path"]
+            )
+
+        )
+    
+    def get_model_training_config(self):
+
+        config = self.config["model_training"]
+
+        Path(config["root_dir"]).mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+
+        return ModelTrainerConfig(
+
+            root_dir=Path(config["root_dir"]),
+
+            model_path=Path(
+                config["model_path"]
             )
 
         )

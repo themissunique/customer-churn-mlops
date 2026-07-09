@@ -16,3 +16,9 @@ data_transformation:
   root_dir: artifacts/data_transformation
 
   preprocessor_path: artifacts/data_transformation/preprocessor.pkl
+
+model_training:
+
+  root_dir: artifacts/model_trainer
+
+  model_path: artifacts/model_trainer/model.pkl

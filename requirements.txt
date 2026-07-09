@@ -9,3 +9,5 @@ ipykernel
 python-box
 ensure
 joblib
+xgboost
+mlflow

@@ -18,6 +18,23 @@ class DataTransformation:
         self.config = config
 
 
+    def _encode_target(self, target_series):
+
+        normalized = target_series.astype(str).str.strip()
+
+        if set(normalized.dropna().unique()) <= {"0", "1"}:
+            return normalized.astype(int)
+
+        if set(normalized.dropna().str.lower().unique()) <= {"no", "yes"}:
+            return normalized.str.lower().map({"no": 0, "yes": 1}).astype(int)
+
+        return pd.Series(
+            pd.factorize(normalized)[0],
+            index=target_series.index,
+            name=target_series.name
+        )
+
+
     def get_data_transformer_object(self):
 
         """
@@ -178,14 +195,12 @@ class DataTransformation:
                 columns=[target_column]
             )
 
-            y_train = train_df[target_column]
-
-
             X_test = test_df.drop(
                 columns=[target_column]
             )
 
-            y_test = test_df[target_column]
+            y_train = self._encode_target(train_df[target_column])
+            y_test = self._encode_target(test_df[target_column])
 
 
             preprocessing_obj = (

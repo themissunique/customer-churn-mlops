@@ -25,3 +25,10 @@ class DataTransformationConfig:
     root_dir: Path
 
     preprocessor_path: Path
+
+@dataclass(frozen=True)
+class ModelTrainerConfig:
+
+    root_dir: Path
+
+    model_path: Path
