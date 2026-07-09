@@ -6,3 +6,5 @@ seaborn
 jupyter
 pyyaml
 ipykernel
+python-box
+ensure

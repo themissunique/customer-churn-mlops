@@ -1,0 +1,48 @@
+from pathlib import Path
+
+import yaml
+
+from src.entity.config_entity import DataIngestionConfig, DataValidationConfig
+
+
+class ConfigurationManager:
+
+    def __init__(self):
+
+        with open("config.yaml") as f:
+
+            self.config = yaml.safe_load(f)
+
+    def get_data_ingestion_config(self):
+
+        config = self.config["data_ingestion"]
+
+        Path(config["root_dir"]).mkdir(parents=True, exist_ok=True)
+
+        return DataIngestionConfig(
+
+            root_dir=Path(config["root_dir"]),
+
+            local_data_file=Path(config["local_data_file"]),
+
+            train_data_path=Path(config["train_data_path"]),
+
+            test_data_path=Path(config["test_data_path"])
+        )
+    
+    def get_data_validation_config(self):
+
+        config = self.config["data_validation"]
+
+        Path(config["root_dir"]).mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+        return DataValidationConfig(
+
+            root_dir=Path(config["root_dir"]),
+
+            STATUS_FILE=Path(config["STATUS_FILE"])
+
+        )
