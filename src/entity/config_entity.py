@@ -18,3 +18,10 @@ class DataIngestionConfig:
     train_data_path: Path
 
     test_data_path: Path
+
+@dataclass(frozen=True)
+class DataTransformationConfig:
+
+    root_dir: Path
+
+    preprocessor_path: Path

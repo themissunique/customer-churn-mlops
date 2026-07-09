@@ -1,3 +1,4 @@
+from src.components.data_transformation import DataTransformation
 from src.config.configuration import ConfigurationManager
 
 from src.components.data_ingestion import DataIngestion
@@ -32,3 +33,17 @@ class TrainingPipeline:
         status = validation.validate()
 
         print(status)
+
+        transformation_config = (
+            config.get_data_transformation_config()
+        )
+
+
+        data_transformation = DataTransformation(
+            transformation_config
+        )
+
+
+        X_train, X_test, y_train, y_test = (
+            data_transformation.initiate_data_transformation()
+        )

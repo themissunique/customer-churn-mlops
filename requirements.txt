@@ -8,3 +8,4 @@ pyyaml
 ipykernel
 python-box
 ensure
+joblib

@@ -2,7 +2,8 @@ from pathlib import Path
 
 import yaml
 
-from src.entity.config_entity import DataIngestionConfig, DataValidationConfig
+from src.entity.config_entity import (DataIngestionConfig, DataTransformationConfig,
+                                      DataValidationConfig)
 
 
 class ConfigurationManager:
@@ -44,5 +45,24 @@ class ConfigurationManager:
             root_dir=Path(config["root_dir"]),
 
             STATUS_FILE=Path(config["STATUS_FILE"])
+
+        )
+    
+    def get_data_transformation_config(self):
+
+        config = self.config["data_transformation"]
+
+        Path(config["root_dir"]).mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+        return DataTransformationConfig(
+
+            root_dir=Path(config["root_dir"]),
+
+            preprocessor_path=Path(
+                config["preprocessor_path"]
+            )
 
         )
