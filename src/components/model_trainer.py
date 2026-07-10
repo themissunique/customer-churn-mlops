@@ -1,7 +1,10 @@
 import os
+from pyexpat import model
+from xml.parsers.expat import model
 import joblib
 import pandas as pd
-
+import mlflow
+import mlflow.sklearn
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
@@ -25,7 +28,8 @@ class ModelTrainer:
         X_test,
         y_test
     ):
-
+        mlflow.set_tracking_uri("sqlite:///mlflow.db")
+        mlflow.set_experiment("Customer_Churn_Classification")
 
         models = {
 
@@ -39,12 +43,6 @@ class ModelTrainer:
             RandomForestClassifier(
                 n_estimators=100,
                 random_state=42
-            ),
-
-
-            "XGBoost":
-            XGBClassifier(
-                random_state=42
             )
 
         }
@@ -54,7 +52,7 @@ class ModelTrainer:
         best_model = None
 
         best_score = 0
-
+        best_model_name = ""
 
         def _normalize_target(values):
             series = pd.Series(values).astype(str).str.strip()
@@ -79,33 +77,54 @@ class ModelTrainer:
 
         for name, model in models.items():
 
-            print(
-                f"Training {name}"
-            )
+            with mlflow.start_run(
+                run_name=name
+            ):
+
+                print(
+                    f"Training {name}"
+                )
 
 
-            model.fit(
-                X_train,
-                y_train
-            )
+                model.fit(
+                    X_train,
+                    y_train
+                )
 
 
-            predictions = model.predict(
-                X_test
-            )
+                predictions = model.predict(
+                    X_test
+                )
 
 
-            score = accuracy_score(
-                y_test,
-                predictions
-            )
+                score = accuracy_score(
+                    y_test,
+                    predictions
+                )
+                mlflow.log_param(
+                    "model_name",
+                    name
+                )
+                mlflow.log_metric(
+                    "accuracy",
+                    score
+                )
+                
+                mlflow.sklearn.log_model(
 
+                    model,
 
-            print(
-                name,
-                "Accuracy:",
-                score
-            )
+                    "model",
+
+                    registered_model_name="Customer_Churn_Model"
+
+                )
+
+                print(
+                    name,
+                    "Accuracy:",
+                    score
+                )
 
 
             if score > best_score:
