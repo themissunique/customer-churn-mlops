@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import joblib
 import pandas as pd
 
@@ -6,12 +8,13 @@ class PredictionPipeline:
 
     def __init__(self):
 
-        self.preprocessor = joblib.load(
-            "artifacts/data_transformation/preprocessor.pkl"
-        )
+        BASE_DIR = Path(__file__).resolve().parent.parent.parent
+        preprocessor_path = BASE_DIR / "artifacts" / "data_transformation" / "preprocessor.pkl"
+
+        self.preprocessor = joblib.load(preprocessor_path)
 
         self.model = joblib.load(
-            "artifacts/model_trainer/model.pkl"
+            BASE_DIR / "artifacts" / "model_trainer" / "model.pkl"
         )
 
 
