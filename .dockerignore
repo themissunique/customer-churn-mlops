@@ -1,0 +1,11 @@
+.venv
+.git
+.github
+notebooks
+logs
+mlruns
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints
