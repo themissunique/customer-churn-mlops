@@ -11,3 +11,6 @@ ensure
 joblib
 xgboost
 mlflow
+fastapi
+uvicorn
+pydantic
