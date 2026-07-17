@@ -75,5 +75,5 @@ def predict(data: CustomerData):
     )
 
     return {
-        "prediction": prediction
+        "prediction": int(prediction)
     }

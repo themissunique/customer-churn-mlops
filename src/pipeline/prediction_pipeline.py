@@ -39,4 +39,5 @@ class PredictionPipeline:
 
         prediction = self.model.predict(transformed)
 
+                
         return prediction[0]
